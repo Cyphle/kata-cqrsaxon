@@ -51,9 +51,33 @@ $(function() {
       error: function(a) {
         console.log(a);
       }
-    })
+    });
   });
 
+
+  // queries for the view
+  setInterval(function() {
+
+    $.ajax({
+      url: "/view",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(["acc-one", "acc-two"]),
+      success: function(accounts) {
+        var html = "";
+        accounts.forEach(function(account){
+          for (var key in account) {
+            html += "<tr><td>" + key + "</td><td>" + account[key] + "</td></tr>"
+          }
+        });
+        $("table#balance tbody").html(html);
+      },
+      error: function(a) {
+        console.log(a);
+      }
+    });
+
+  }, 2000);
 
 
 });

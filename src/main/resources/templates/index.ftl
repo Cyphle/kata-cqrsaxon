@@ -1,5 +1,11 @@
 <html>
 <head>
+  <style type="text/css">
+    table#balance td,
+    table#balance th {
+      padding: 0px 10px;
+    }
+  </style>
   <script type="application/javascript" src="/webjars/jquery/2.1.4/jquery.min.js">
   </script>
   <link rel="stylesheet" href="/webjars/bootstrap-css-only/3.3.4/css/bootstrap.min.css">
@@ -10,7 +16,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Explore Axon Framework</a>
+      <a class="navbar-brand" href="#">Explore CQRS With Axon Framework</a>
     </div>
     <div>
       <ul class="nav navbar-nav">
@@ -40,12 +46,26 @@
       </div>
     </div>
   </div>
+  <br/><br/>
   <div class="row">
     <div class="col-md-12">
 
+      <div>
+        <table id="balance">
+          <thead>
+          <tr>
+            <th>Accounts</th>
+            <th>Balance</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- updated by js -->
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
-
 </div>
 
 </body>

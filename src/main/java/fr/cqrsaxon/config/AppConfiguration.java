@@ -1,20 +1,25 @@
 package fr.cqrsaxon.config;
 
-import fr.cqrsaxon.api.command.DebitAccountCommand;
-import fr.cqrsaxon.api.command.DebitAccountHandler;
+import fr.cqrsaxon.model.Account;
 import org.axonframework.commandhandling.SimpleCommandBus;
 import org.axonframework.commandhandling.annotation.AnnotationCommandHandlerBeanPostProcessor;
 import org.axonframework.commandhandling.gateway.DefaultCommandGateway;
+import org.axonframework.common.jpa.SimpleEntityManagerProvider;
+import org.axonframework.repository.GenericJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 @Configuration
 public class AppConfiguration {
+  @PersistenceContext
+  private EntityManager entityManager;
+
   @Bean
   public SimpleCommandBus commandBus() {
-    SimpleCommandBus simpleCommandBus = new SimpleCommandBus();
-    simpleCommandBus.subscribe(DebitAccountCommand.class.getName(), new DebitAccountHandler());
-    return simpleCommandBus;
+    return new SimpleCommandBus();
   }
 
   @Bean
@@ -27,5 +32,11 @@ public class AppConfiguration {
   @Bean
   public DefaultCommandGateway commandGateway() {
     return new DefaultCommandGateway(commandBus());
+  }
+
+  @Bean
+  public GenericJpaRepository genericJpaRepository() {
+    SimpleEntityManagerProvider entityManagerProvider = new SimpleEntityManagerProvider(entityManager);
+    return new GenericJpaRepository(entityManagerProvider, Account.class);
   }
 }
