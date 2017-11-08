@@ -1,5 +1,7 @@
 package fr.cqrsaxon.model;
 
+import fr.cqrsaxon.api.event.AccountCreditedEvent;
+import fr.cqrsaxon.api.event.AccountDebitedEvent;
 import org.axonframework.domain.AbstractAggregateRoot;
 
 import javax.persistence.Column;
@@ -37,6 +39,9 @@ public class Account extends AbstractAggregateRoot {
   public void debit(Double debitAmount) {
     if (Double.compare(debitAmount, 0.0d) > 0 && this.balance - debitAmount > -1) {
       this.balance -= debitAmount;
+
+      AccountDebitedEvent accountDebitedEvent = new AccountDebitedEvent(this.id, debitAmount, this.balance);
+      registerEvent(accountDebitedEvent);
     } else {
       throw new IllegalArgumentException("Cannot debit with the amount");
     }
@@ -45,6 +50,9 @@ public class Account extends AbstractAggregateRoot {
   public void credit(Double creditAmount) {
     if (Double.compare(creditAmount, 0.0d) > 0 && Double.compare(creditAmount, 1000000) < 0) {
       this.balance += creditAmount;
+
+      AccountCreditedEvent accountCreditedEvent = new AccountCreditedEvent(this.id, creditAmount, this.balance);
+      registerEvent(accountCreditedEvent);
     } else {
       throw new IllegalArgumentException("Cannot credit with the amount");
     }

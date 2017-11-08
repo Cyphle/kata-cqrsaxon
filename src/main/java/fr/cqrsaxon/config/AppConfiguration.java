@@ -5,6 +5,8 @@ import org.axonframework.commandhandling.SimpleCommandBus;
 import org.axonframework.commandhandling.annotation.AnnotationCommandHandlerBeanPostProcessor;
 import org.axonframework.commandhandling.gateway.DefaultCommandGateway;
 import org.axonframework.common.jpa.SimpleEntityManagerProvider;
+import org.axonframework.eventhandling.SimpleEventBus;
+import org.axonframework.eventhandling.annotation.AnnotationEventListenerBeanPostProcessor;
 import org.axonframework.repository.GenericJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +39,20 @@ public class AppConfiguration {
   @Bean
   public GenericJpaRepository genericJpaRepository() {
     SimpleEntityManagerProvider entityManagerProvider = new SimpleEntityManagerProvider(entityManager);
-    return new GenericJpaRepository(entityManagerProvider, Account.class);
+    GenericJpaRepository genericJpaRepository = new GenericJpaRepository(entityManagerProvider, Account.class);
+    genericJpaRepository.setEventBus(eventBus());
+    return genericJpaRepository;
+  }
+
+  @Bean
+  public SimpleEventBus eventBus() {
+    return new SimpleEventBus();
+  }
+
+  @Bean
+  AnnotationEventListenerBeanPostProcessor annotationEventListenerBeanPostProcessor() {
+    AnnotationEventListenerBeanPostProcessor listener = new AnnotationEventListenerBeanPostProcessor();
+    listener.setEventBus(eventBus());
+    return listener;
   }
 }

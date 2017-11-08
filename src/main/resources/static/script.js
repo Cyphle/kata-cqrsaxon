@@ -60,9 +60,7 @@ $(function() {
 
     $.ajax({
       url: "/view",
-      method: "POST",
-      contentType: "application/json",
-      data: JSON.stringify(["acc-one", "acc-two"]),
+      method: "GET",
       success: function(accounts) {
         var html = "";
         accounts.forEach(function(account){
@@ -77,7 +75,7 @@ $(function() {
       }
     });
 
-  }, 2000);
+  }, 1000);
 
 
 });
