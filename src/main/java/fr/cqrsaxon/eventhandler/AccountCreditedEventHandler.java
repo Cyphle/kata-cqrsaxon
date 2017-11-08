@@ -20,11 +20,15 @@ public class AccountCreditedEventHandler {
   public void handleAccountCreditedEvent(AccountCreditedEvent event, Message eventMessage, @Timestamp DateTime moment) {
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-    String accountId = event.getAccountId();
+    // Get the current states as reflected in the event
+    String accountNo = event.getAccountNo();
     Double balance = event.getBalance();
+    Double amountCredited = event.getCreditedAmount();
+    Double newBalance = balance + amountCredited;
 
+    // Update the view
     String updateQuery = "UPDATE account_view SET balance = ? WHERE account_no = ?";
-    jdbcTemplate.update(updateQuery, new Object[]{balance, accountId});
+    jdbcTemplate.update(updateQuery, new Object[]{newBalance, accountNo});
 
     System.out.println("Events Handled With EventMessage " + eventMessage.toString() + " at " + moment.toString());
   }

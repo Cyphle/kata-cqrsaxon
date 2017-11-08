@@ -11,7 +11,7 @@ public class AccountDebitedEvent {
     this.balance = balance;
   }
 
-  public String getAccountId() {
+  public String getAccountNo() {
     return accountId;
   }
 

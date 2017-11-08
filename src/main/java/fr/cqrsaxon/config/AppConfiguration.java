@@ -7,12 +7,17 @@ import org.axonframework.commandhandling.gateway.DefaultCommandGateway;
 import org.axonframework.common.jpa.SimpleEntityManagerProvider;
 import org.axonframework.eventhandling.SimpleEventBus;
 import org.axonframework.eventhandling.annotation.AnnotationEventListenerBeanPostProcessor;
+import org.axonframework.eventsourcing.EventSourcingRepository;
+import org.axonframework.eventstore.EventStore;
+import org.axonframework.eventstore.fs.FileSystemEventStore;
+import org.axonframework.eventstore.fs.SimpleEventFileResolver;
 import org.axonframework.repository.GenericJpaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.File;
 
 @Configuration
 public class AppConfiguration {
@@ -54,5 +59,18 @@ public class AppConfiguration {
     AnnotationEventListenerBeanPostProcessor listener = new AnnotationEventListenerBeanPostProcessor();
     listener.setEventBus(eventBus());
     return listener;
+  }
+
+  @Bean
+  public EventStore eventStore() {
+    EventStore eventStore = new FileSystemEventStore(new SimpleEventFileResolver(new File("./events")));
+    return eventStore;
+  }
+
+  @Bean
+  public EventSourcingRepository eventSourcingRepository() {
+    EventSourcingRepository eventSourcingRepository = new EventSourcingRepository(Account.class, eventStore());
+    eventSourcingRepository.setEventBus(eventBus());
+    return eventSourcingRepository;
   }
 }

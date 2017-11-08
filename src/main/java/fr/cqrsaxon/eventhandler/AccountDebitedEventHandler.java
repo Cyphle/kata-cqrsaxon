@@ -17,10 +17,14 @@ public class AccountDebitedEventHandler {
   public void handleAccountDebitedEvent(AccountDebitedEvent event) {
     JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-    String accountId = event.getAccountId();
+    // Get the current states as reflected in the event
+    String accountNo = event.getAccountNo();
     Double balance = event.getBalance();
+    Double amountDebited = event.getAmountDebited();
+    Double newBalance = balance - amountDebited;
 
+    // Update the view
     String updateQuery = "UPDATE account_view SET balance = ? WHERE account_no = ?";
-    jdbcTemplate.update(updateQuery, new Object[]{balance, accountId});
+    jdbcTemplate.update(updateQuery, new Object[]{newBalance, accountNo});
   }
 }

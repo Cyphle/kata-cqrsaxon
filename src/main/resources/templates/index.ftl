@@ -31,18 +31,18 @@
   <div class="row">
     <div class="col-md-6">
       <div>
-        <select id="debit-account-no">
+        <select acountNo="debit-account-no">
           <option value="null">Choose Account</option>
           <option value="acc-one">Account One</option>
           <option value="acc-two">Account Two</option>
         </select>
-        <input id="debit-amount" type="text" /> <button id="debit-btn">Debit Account</button><br/>
-        <select id="credit-account-no">
+        <input acountNo="debit-amount" type="text" /> <button acountNo="debit-btn">Debit Account</button><br/>
+        <select acountNo="credit-account-no">
           <option value="null">Choose Account</option>
           <option value="acc-one">Account One</option>
           <option  value="acc-two">Account Two</option>
         </select>
-        <input id="credit-amount" type="text" /> <button id="credit-btn">Credit Account</button>
+        <input acountNo="credit-amount" type="text" /> <button acountNo="credit-btn">Credit Account</button>
       </div>
     </div>
   </div>
@@ -51,7 +51,7 @@
     <div class="col-md-12">
 
       <div>
-        <table id="balance">
+        <table acountNo="balance">
           <thead>
           <tr>
             <th>Accounts</th>
